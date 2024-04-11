@@ -1,6 +1,8 @@
 import 'package:ecommerce_app/components/my_drawer.dart';
 import 'package:ecommerce_app/components/my_product_tile.dart';
 import 'package:ecommerce_app/models/shop.dart';
+import 'package:ecommerce_app/themes/light_mode.dart';
+import 'package:ecommerce_app/themes/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,8 +17,19 @@ class ShopPage extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           foregroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: const Text('Shop'),
+          title: const Center(child: Text('Shop')),
           actions: [
+            IconButton(
+              icon: Icon(
+                Provider.of<ThemeProvider>(context).themeData == lightMode
+                    ? Icons.dark_mode
+                    : Icons.light_mode_outlined,
+              ),
+              onPressed: () {
+                Provider.of<ThemeProvider>(listen: false, context)
+                    .toggleTheme();
+              },
+            ),
             Padding(
               padding: const EdgeInsets.only(right: 12.0),
               child: IconButton(

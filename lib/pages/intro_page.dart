@@ -1,5 +1,8 @@
 import 'package:ecommerce_app/components/my_button.dart';
+import 'package:ecommerce_app/themes/light_mode.dart';
+import 'package:ecommerce_app/themes/theme_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class IntroPage extends StatelessWidget {
   const IntroPage({super.key});
@@ -8,6 +11,26 @@ class IntroPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
+      appBar: AppBar(
+        title: const Text('Welcome Suheyb,'),
+        backgroundColor: Colors.transparent,
+        foregroundColor: Theme.of(context).colorScheme.inversePrimary,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Provider.of<ThemeProvider>(listen: false, context).toggleTheme();
+            },
+            icon: Padding(
+              padding: const EdgeInsets.only(right: 12.0),
+              child: Icon(
+                Provider.of<ThemeProvider>(context).themeData == lightMode
+                    ? Icons.dark_mode
+                    : Icons.light_mode_outlined,
+              ),
+            ),
+          ),
+        ],
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

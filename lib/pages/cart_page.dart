@@ -1,6 +1,8 @@
 import 'package:ecommerce_app/components/my_button.dart';
 import 'package:ecommerce_app/models/product.dart';
 import 'package:ecommerce_app/models/shop.dart';
+import 'package:ecommerce_app/themes/light_mode.dart';
+import 'package:ecommerce_app/themes/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -85,6 +87,21 @@ class CartPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         foregroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text('Cart'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Provider.of<ThemeProvider>(listen: false, context).toggleTheme();
+            },
+            icon: Padding(
+              padding: const EdgeInsets.only(right: 12.0),
+              child: Icon(
+                Provider.of<ThemeProvider>(context).themeData == lightMode
+                    ? Icons.dark_mode
+                    : Icons.light_mode_outlined,
+              ),
+            ),
+          ),
+        ],
       ),
       backgroundColor: Theme.of(context).colorScheme.background,
       body: cart.isEmpty

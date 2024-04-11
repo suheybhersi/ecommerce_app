@@ -52,12 +52,7 @@ class MyProductTile extends StatelessWidget {
             children: [
               AspectRatio(
                 aspectRatio: 1,
-                child: Container(
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(25)),
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(25),
-                    child: Image.asset(product.imagePath)),
+                child: Image.asset(product.imagePath),
               ),
               const SizedBox(height: 25),
               Text(
