@@ -15,7 +15,7 @@ class MyDrawer extends StatelessWidget {
             children: [
               DrawerHeader(
                 decoration:
-                    BoxDecoration(border: Border(bottom: BorderSide(width: 2))),
+                    const BoxDecoration(border: Border(bottom: BorderSide(width: 2))),
                 child: Icon(
                   Icons.shopping_bag,
                   size: 72,
@@ -33,6 +33,7 @@ class MyDrawer extends StatelessWidget {
                   text: 'Cart',
                   icon: Icons.shopping_cart,
                   onTap: () {
+                    Navigator.pop(context);
                     Navigator.pushNamed(context, '/cart_page');
                   }),
             ],
