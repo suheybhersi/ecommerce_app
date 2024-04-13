@@ -10,27 +10,13 @@ class CartPage extends StatelessWidget {
   const CartPage({super.key});
 
   void removeItemFromCart(BuildContext context, Product product) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        content: const Text('Remove from cart?'),
-        actions: [
-          MaterialButton(
-            onPressed: () {
-              Navigator.pop(context);
-              context.read<Shop>().removeFromCart(product);
-              context.read<Shop>().total =
-                  context.read<Shop>().total - product.price;
-            },
-            child: const Text('Yes'),
-          ),
-          MaterialButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-        ],
-      ),
-    );
+    context.read<Shop>().removeFromCart(product);
+    context.read<Shop>().total = context.read<Shop>().total - product.price;
+  }
+
+  void addToCart(BuildContext context, Product product) {
+    context.read<Shop>().addToCart(product);
+    context.read<Shop>().total = context.read<Shop>().total + product.price;
   }
 
   void payButtonPressed(BuildContext context) {
@@ -81,6 +67,7 @@ class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cart = context.watch<Shop>().cart;
+    final cartCount = context.watch<Shop>().cartCount;
     final total = context.watch<Shop>().total;
     return Scaffold(
       appBar: AppBar(
@@ -88,13 +75,14 @@ class CartPage extends StatelessWidget {
         foregroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text('Cart'),
         actions: [
-          IconButton(
-            onPressed: () {
-              Provider.of<ThemeProvider>(listen: false, context).toggleTheme();
-            },
-            icon: Padding(
-              padding: const EdgeInsets.only(right: 12.0),
-              child: Icon(
+          Container(
+            margin: const EdgeInsets.only(right: 8),
+            child: IconButton(
+              onPressed: () {
+                Provider.of<ThemeProvider>(listen: false, context)
+                    .toggleTheme();
+              },
+              icon: Icon(
                 Provider.of<ThemeProvider>(context).themeData == lightMode
                     ? Icons.dark_mode
                     : Icons.light_mode_outlined,
@@ -114,14 +102,25 @@ class CartPage extends StatelessWidget {
                     child: ListView.builder(
                       itemCount: cart.length,
                       itemBuilder: (context, index) {
-                        final item = cart[index];
+                        final item = cart.elementAt(index);
+                        final itemCount = cartCount[item.name];
 
                         return ListTile(
-                          title: Text(item.name),
-                          subtitle: Text(item.price.toStringAsFixed(2)),
-                          trailing: IconButton(
-                            icon: const Icon(Icons.remove),
-                            onPressed: () => removeItemFromCart(context, item),
+                          title: Text('${item.name} x$itemCount'),
+                          subtitle: Text(
+                              '£${(itemCount! * item.price).toStringAsFixed(2)}'),
+                          trailing: Wrap(
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.remove),
+                                onPressed: () =>
+                                    removeItemFromCart(context, item),
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.add),
+                                onPressed: () => addToCart(context, item),
+                              ),
+                            ],
                           ),
                         );
                       },
@@ -135,13 +134,15 @@ class CartPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Total: ${total.toStringAsFixed(2)}',
+                        'Total: £${total.toStringAsFixed(2)}',
                         style: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       MyButton(
                         onTap: () => payButtonPressed(context),
-                        child: const Text('PAY NOW'),
+                        child: const Text(
+                          'PAY NOW',
+                        ),
                       ),
                     ],
                   ),

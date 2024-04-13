@@ -16,13 +16,14 @@ class IntroPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         foregroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
-          IconButton(
-            onPressed: () {
-              Provider.of<ThemeProvider>(listen: false, context).toggleTheme();
-            },
-            icon: Padding(
-              padding: const EdgeInsets.only(right: 12.0),
-              child: Icon(
+          Container(
+            margin: const EdgeInsets.only(right: 8),
+            child: IconButton(
+              onPressed: () {
+                Provider.of<ThemeProvider>(listen: false, context)
+                    .toggleTheme();
+              },
+              icon: Icon(
                 Provider.of<ThemeProvider>(context).themeData == lightMode
                     ? Icons.dark_mode
                     : Icons.light_mode_outlined,

@@ -29,24 +29,31 @@ class Shop extends ChangeNotifier {
     )
   ];
 
-  List<Product> _cart = [];
+  Set<Product> _cart = {};
+  final Map<String, num> _cartCount = {};
 
   List<Product> get shop => _shop;
-  List<Product> get cart => _cart;
+  Set<Product> get cart => _cart;
+  Map<String, num> get cartCount => _cartCount;
   double total = 0.0;
 
   void addToCart(Product item) {
     _cart.add(item);
+    _cartCount.putIfAbsent(item.name, () => 0);
+    _cartCount[item.name] = _cartCount[item.name]! + 1;
     notifyListeners();
   }
 
   void removeFromCart(Product item) {
-    _cart.remove(item);
+    _cartCount[item.name] = _cartCount[item.name]! - 1;
+    if (_cartCount[item.name] == 0) {
+      _cart.remove(item);
+    }
     notifyListeners();
   }
 
   void emptyCart() {
-    _cart = [];
+    _cart = {};
     notifyListeners();
   }
 }
