@@ -30,7 +30,7 @@ class Shop extends ChangeNotifier {
   ];
 
   Set<Product> _cart = {};
-  final Map<String, num> _cartCount = {};
+  Map<String, num> _cartCount = {};
 
   List<Product> get shop => _shop;
   Set<Product> get cart => _cart;
@@ -54,6 +54,7 @@ class Shop extends ChangeNotifier {
 
   void emptyCart() {
     _cart = {};
+    _cartCount = {};
     notifyListeners();
   }
 }
